@@ -1,0 +1,210 @@
+<html><head>
+        <meta name="description" content="Trip Cost Calculator">
+        <link rel="icon" href="img\gas-pump.png.ico">
+        <title>OnCost</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <style type="text/css">
+            body
+              {
+                font-family: Arial;
+                font-size: 10pt;
+            }
+        </style>
+    </head><body>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+        <script type="text/javascript">
+            var source, destination;
+              var directionsDisplay;
+              var directionsService = new google.maps.DirectionsService();
+              google.maps.event.addDomListener(window, 'load', function () {
+                new google.maps.places.SearchBox(document.getElementById('txtSource'));
+                new google.maps.places.SearchBox(document.getElementById('txtDestination'));
+                directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+            });
+            
+              function GetRoute() {
+                var bandung = new google.maps.LatLng(-6.917464, 107.619123);
+                var mapOptions = {
+                    zoom: 13,
+                    center: bandung
+                };
+                map = new google.maps.Map(document.getElementById('dvMap'), mapOptions);
+                directionsDisplay.setMap(map);
+                directionsDisplay.setPanel(document.getElementById('dvPanel'));
+                
+                                    //*********DIRECTIONS AND ROUTE**********************//
+                                    source = document.getElementById("txtSource").value;
+                                    destination = document.getElementById("txtDestination").value;
+            
+                                    var request = {
+                                        origin: source,
+                                        destination: destination,
+                                        travelMode: google.maps.TravelMode.DRIVING
+                                    };
+                                    directionsService.route(request, function (response, status) {
+                                        if (status == google.maps.DirectionsStatus.OK) {
+                                            directionsDisplay.setDirections(response);
+                                        }
+                                    });
+            
+                                    //*********DISTANCE AND DURATION**********************//
+                                    var service = new google.maps.DistanceMatrixService();
+                                    service.getDistanceMatrix({
+                                        origins: [source],
+                                        destinations: [destination],
+                                        travelMode: google.maps.TravelMode.DRIVING,
+                                        unitSystem: google.maps.UnitSystem.METRIC,
+                                        avoidHighways: false,
+                                        avoidTolls: false
+                                    },  function (response, status) {
+                                        if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+                                            var distance = response.rows[0].elements[0].distance.text;
+                                            var duration = response.rows[0].elements[0].duration.text;
+                                            var dvDistance = document.getElementById("dvDistance");
+                                            dvDistance.innerHTML = "";
+                                            dvDistance.innerHTML += "Jarak: " + distance + "<br />";
+                                            dvDistance.innerHTML += "Waktu Tempuh:" + duration + "<br />";
+                                            var konsumsi  = 33;
+                                            var hargabbm = 6750;
+                                            var capacity = 3.5;
+                                            var ongkos = parseFloat(distance)*(1/konsumsi)*hargabbm;
+                                            var jmlisi= (ongkos/(hargabbm*capacity));
+                                            dvDistance.innerHTML += "Ongkos BBM (IDR): " + parseInt(ongkos) + "<br />";
+                                            dvDistance.innerHTML += "Pitstop (SPBU): " + parseInt(jmlisi) + "<br />";
+            
+                                        } else {
+                                            return("Unable to find the distance via road.");
+            
+            
+                                        }
+                                    });
+            }
+        </script>
+        <br>
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-left"><img alt="Brand" src="img\logo oncost.png" style="display: inline-block; width:150px;" class="center-block"></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+                    <ul class="nav navbar-nav navbar-right"></ul>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="img\Banner.png" class="img-responsive">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="mobil" class="merekmobil">Car Brand :</label>
+                        <select class="form-control" id="room" name="room">
+                            <option value="101">101</option>
+                            <option value="102">102</option>
+                            <option value="103">103</option>
+                            <option value="104">104</option>
+                            <option value="105">105</option>
+                            <option value="201">201</option>
+                            <option value="202">202</option>
+                            <option value="203">203</option>
+                            <option value="204">204</option>
+                        </select>
+                        <label for="room" class="control-label">Year :</label>
+                        <select class="form-control" id="room" name="room">
+                            <option value="101">101</option>
+                            <option value="102">102</option>
+                            <option value="103">103</option>
+                            <option value="104">104</option>
+                            <option value="105">105</option>
+                            <option value="201">201</option>
+                            <option value="202">202</option>
+                            <option value="203">203</option>
+                            <option value="204">204</option>
+                        </select>
+                        <label for="room" class="control-label">Car Type :</label>
+                        <select class="form-control" id="room" name="room">
+                            <option value="101">101</option>
+                            <option value="102">102</option>
+                            <option value="103">103</option>
+                            <option value="104">104</option>
+                            <option value="105">105</option>
+                            <option value="201">201</option>
+                            <option value="202">202</option>
+                            <option value="203">203</option>
+                            <option value="204">204</option>
+                        </select>
+                        <label for="room" class="control-label">Fuel :</label>
+                        <select class="form-control" id="room" name="room">
+                            <option value="101">101</option>
+                            <option value="102">102</option>
+                            <option value="103">103</option>
+                            <option value="104">104</option>
+                            <option value="105">105</option>
+                            <option value="201">201</option>
+                            <option value="202">202</option>
+                            <option value="203">203</option>
+                            <option value="204">204</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <br>
+            <div class="form-inline">
+                <center>
+                    <label for="asal">Asal:</label>
+                    <input type="text" class="form-control" id="txtSource" value="Jalan Palem, Lagadar, Bandung, Indonesia" style="width: 300px">
+                    <label for="tujuan">Tujuan:</label>
+                    <input type="text" class="form-control" id="txtDestination" value="Jalan Ganesha, Bandung, Indonesia" style="width: 300px">
+                    <input type="button" class="btn btn-info" value="Kalkulasi Rute" onclick="GetRoute()">
+                    <hr>
+                </center>
+            </div>
+            <table border="0" cellpadding="0" cellspacing="3">
+                <form class="form-inline"></form>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div id="dvDistance"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="dvMap" style="width: 1100px; height: 700px" class="col-md-12"></div>
+                        </td>
+                        <!--<td>
+      <div id="dvPanel" style="width: 300px; height: 700px"></div>
+  </td>-->
+                    </tr>
+                </tbody>
+            </table>
+            <!--<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&key=AIzaSyCUoaKKLrTaer0E2iF5O9Owoc4qotqfdPo"
+            async="" defer="defer" type="text/javascript"></script> //Buat  tanpa localhost -->
+            <script src="//maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true&amp;key=AIzaSyDoCT8L01VaTylXVaTQV7ahVXRhUwJBZoY" async="" defer="defer" type="text/javascript"></script>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-dismissable alert-success">
+                        <center>
+                            <strong>2016 -</strong>
+                            <a href="http://rzrizaldy.github.io/" target="_blank">Rizaldy Al Kautsar Utomo</a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+</body></html>
