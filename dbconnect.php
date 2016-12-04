@@ -1,35 +1,90 @@
+<html><head>
+<link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
 <?php
-$servername = "localhost";
-$username = "rzrizaldy";
-$password = "12345678";
-$dbname = "oncost";
-
-// Create connection
-$pdo = new PDO($servername, $username, $password, $dbname);
-
-// Check connection
-if ($pdo->connect_error) {
-    die("Connection failed: " . $pdo->connect_error);
-} 
+$conn = new mysqli('localhost', 'root', '', 'oncost') 
+or die ('Cannot connect to db');
 
 //FORM 1
-$sql = "SELECT * FROM mobil";
- 
-//Prepare the select statement.
-$stmt = $pdo->prepare($sql);
- 
-//Execute the statement.
-$stmt->execute();
- 
-//Retrieve the rows using fetchAll.
-$mobil= $stmt->fetchAll();
- 
-?>
- 
-<select>
-    <?php foreach($mobil as $merek): ?>
-        <option value="<?= $merek['id']; ?>"><?= $merek['merekmobil']; ?></option>
-    <?php endforeach; ?>
-</select>
+function pilihmerek($conn){
+  $result = $conn->query("SELECT DISTINCT merekmobil FROM mobil");
+  echo "<select class='form-control' id='room' name='merekmobil'>";
+
+  while ($row = $result->fetch_assoc()) {
+
+    unset($merekmobil);
+    $merekmobil = $row['merekmobil']; 
+    echo '<option value="'.$merekmobil.'">'.$merekmobil.'</option>';
+    $merekmobil=$_POST['merekmobil'];
+
+  }
+
+  echo "</select>";
+}
+
+
+//FORM 2
+
+
+
+function pilihtahun($conn){
+  $result = $conn->query("SELECT DISTINCT tahun FROM mobil WHERE merekmobil='BMW'");
+  echo "<select class='form-control' id='room' name='tahun'>";
+  while ($row = $result->fetch_assoc()) {
+
+    unset($tahun);
+    $tahun = $row['tahun']; 
+    echo '<option value="'.$tahun.'">'.$tahun.'</option>';
+
+  }
+
+  echo "</select>";
+}
+
+
+//FORM 3
+
+
+function pilihmodel($conn){
+  $result = $conn->query("SELECT DISTINCT model FROM mobil WHERE merekmobil='BMW' and tahun='1996'");
+  echo "<select class='form-control' id='room' name='model'>";
+  while ($row = $result->fetch_assoc()) {
+
+    unset($model);
+    $model = $row['model']; 
+    echo '<option value="'.$model.'">'.$model.'</option>';
+
+  }
+  echo "</select>";
+}
+
+
+//FORM 4
+
+
+function pilihjenis($conn){
+  $result = $conn->query("SELECT DISTINCT jenis FROM bbm WHERE tipebbm='High-Octane Gasoline'");
+  echo "<select class='form-control' id='room' name='jenis'>";
+  while ($row = $result->fetch_assoc()) {
+
+    unset($jenis);
+    $jenis= $row['jenis'];
+    echo '<option value="'.$jenis.'">'.$jenis.'</option>';
+  }
+  echo "</select>";
+}
+
+/*
+pilihmerek($conn);
+pilihtahun($conn);
+pilihmodel($conn);
+pilihjenis($conn);
+*/
+
 
 ?>
+
+</body>
+</html>
+
