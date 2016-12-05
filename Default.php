@@ -73,16 +73,16 @@
                 <img src="img\Banner.png" class="img-responsive">
               </div>
               <div class="col-md-6">
-                <label for="mobil" class="control-label">Car Brand :</label>
+                <label for="mobil" class="control-label">Merek Mobil :</label>
                 <?php echo pilihmerek($conn);?>
                 <br>
-                <label for="room" class="control-label">Year :</label>
+                <label for="room" class="control-label">Tahun Produksi :</label>
                 <?php echo pilihtahun($conn);?>
                 <br>
-                <label for="room" class="control-label">Car Type :</label>
+                <label for="room" class="control-label">Model :</label>
                 <?php echo pilihmodel($conn);?>
                 <br>
-                <label for="room" class="control-label">Fuel :</label>
+                <label for="room" class="control-label">Jenis BBM :</label>
                 <?php echo pilihjenis($conn);?>
               </div>
               <div class="row">
@@ -244,8 +244,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   }, function(response, status) {
     if (status === 'OK') {
       directionsDisplay.setDirections(response);
-      var route = response.routes[0];
-      
+      var route = response.routes[0];      
       var summaryPanel1 = document.getElementById('directions-panel1');
       var summaryPanel2 = document.getElementById('directions-panel2');
       var summaryPanel3 = document.getElementById('directions-panel3');
@@ -260,12 +259,16 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var capacity = 50; //kapasitas fuel tank
         var dir = route.legs[i].distance.text; //rubah agar bisa diparsing
         dir = dir.split(',').join(''); //hapus koma agar pas diparsing tidak bulat ke kecil
-        var ongkos = parseFloat(dir)*(1/konsumsi)*hargabbm; //rumus ongkos bbm dengan km/l
+        var ongkos = parseFloat(dir)*(1/Number(konsumsi))*hargabbm; //rumus ongkos bbm dengan km/l
+        var ongkos2 = parseFloat(dir)*(1/konsumsi)*hargabbm*2;
+        var ongkos3 = parseFloat(dir)*(1/konsumsi)*hargabbm*14;
         var jmlisi= (ongkos/(hargabbm*capacity)); //jumlah pengisian berdasarkan konsumsi dan kapasitas
+        var jmlisi2= (ongkos2/(hargabbm*capacity));
+        var jmlisi3= (ongkos3/(hargabbm*capacity));;
         summaryPanel1.innerHTML += "<strong>Jarak: </strong>" + route.legs[i].distance.text;
         summaryPanel2.innerHTML += "<strong>Waktu Tempuh: </strong>" + route.legs[i].duration.text;
-        summaryPanel3.innerHTML +=  "Rp." + parseInt(ongkos) ; //menghapus nilai km agar bisa dikalkulasi
-        summaryPanel4.innerHTML +=  parseInt(jmlisi) + " kali"; //merubah ke angka bulat
+        summaryPanel3.innerHTML +=  "Rp." + parseInt(ongkos) + " (Sekali Jalan) | Rp." + parseInt(ongkos2) + " (Pulang Pergi) | Rp." + parseInt(ongkos3) + " (Mingguan)"; //menghapus nilai km agar bisa dikalkulasi
+        summaryPanel4.innerHTML +=  parseInt(jmlisi) + " kali (Sekali Jalan) | " + parseInt(jmlisi2) + " kali (Pulang Pergi) | " + parseInt(jmlisi3) + " kali (Mingguan)"; //merubah ke angka bulat
       }
     } else {
       window.alert('Directions request failed due to ' + status);
