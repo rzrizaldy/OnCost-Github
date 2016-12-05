@@ -73,17 +73,21 @@
                 <img src="img\Banner.png" class="img-responsive">
               </div>
               <div class="col-md-6">
-                <label for="mobil" class="control-label">Merek Mobil :</label>
+                <!--<label for="mobil" class="control-label">Merek Mobil :</label>
                 <?php echo pilihmerek($conn);?>
-                <br>
-                <label for="room" class="control-label">Tahun Produksi :</label>
-                <?php echo pilihtahun($conn);?>
-                <br>
-                <label for="room" class="control-label">Model :</label>
+                <label for="tahun" class="control-label">Tahun Produksi :</label>
+                <?php echo pilihtahun($conn);?>-->
+                <label for="model" class="control-label">Model :</label>
                 <?php echo pilihmodel($conn);?>
                 <br>
-                <label for="room" class="control-label">Jenis BBM :</label>
+                <label for="jenis" class="control-label">Jenis BBM :</label>
                 <?php echo pilihjenis($conn);?>
+                <br>
+                <label for="konsumsi">Konsumsi BBM:</label>
+                <input type="number" class="form-control" id="bbm" placeholder="Konsumsi BBM dalam km/liter">
+                <br>
+                <label for="harga">Harga BBM:</label>
+                <input type="number" class="form-control" id="harga" placeholder="Harga BBM dalam rupiah">
               </div>
               <div class="row">
                 <div class="col-md-6">
@@ -254,8 +258,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       // For each route, display summary information.
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
-        var konsumsi  = 8; //nilai konsumsi kendaraan
-        var hargabbm = 6750; //harga bahan bakar yang dipakai
+        var konsumsi  = document.getElementById("bbm").value; //nilai konsumsi kendaraan
+        var hargabbm = document.getElementById("harga").value; //harga bahan bakar yang dipakai
         var capacity = 50; //kapasitas fuel tank
         var dir = route.legs[i].distance.text; //rubah agar bisa diparsing
         dir = dir.split(',').join(''); //hapus koma agar pas diparsing tidak bulat ke kecil
