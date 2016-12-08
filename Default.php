@@ -4,7 +4,7 @@
 <link rel="icon" href="img\gas-pump.png.ico">
 <title>OnCost</title>
 <link href="css/bootstrap.css" rel="stylesheet">
-<?php include("dbconnect.php"); ?>
+<?php include("function.php"); ?>
 <style type="text/css">
   body {background-color: #F3F0DB;}
   body
@@ -84,10 +84,11 @@
                 <?php echo pilihjenis($conn);?>
                 <br>
                 <label for="konsumsi">Konsumsi BBM:</label>
-                <input type="number" class="form-control" id="bbm" placeholder="Konsumsi BBM dalam km/liter">
+                <?php echo isikonsumsi();?>
                 <br>
                 <label for="harga">Harga BBM:</label>
-                <input type="number" class="form-control" id="harga" placeholder="Harga BBM dalam rupiah">
+                <?php echo isiharga();?>
+
               </div>
               <div class="row">
                 <div class="col-md-6">
@@ -95,12 +96,7 @@
                 </div>
                 <div class="col-md-6" id=""></div>
                 <div class="col-md-12">
-                  <ul class="list-group">
-                    <li class="list-group-item" id="directions-panel1"><strong>Jarak: </strong></li>
-                    <li class="list-group-item" id="directions-panel2"><strong>Waktu Tempuh: </strong></li>
-                    <li class="list-group-item" id="directions-panel3"><strong>Ongkos BBM: </strong></li>
-                    <li class="list-group-item" id="directions-panel4"><strong>Berhenti di SPBU: </strong></li>
-                  </ul>
+                <?php echo displayhasil();?>
                 </div>
               </div>
             </div>
